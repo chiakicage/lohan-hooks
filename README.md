@@ -5,7 +5,7 @@ We use [Meta Device](https://pytorch.org/docs/stable/meta.html) to create models
 
 We use [nn.Module.register_module_(forward, ...)_hook](https://pytorch.org/docs/stable/generated/torch.nn.modules.module.register_module_forward_hook.html) to implement our hooks system. A `LoHanParameterGroup` will be attached to any `nn.Module` which has `nn.Parameter` (like `nn.Linear`), then manage its parameter by `LoHanParam`. `LoHanParam` will operate on the `untyped_storage()` of a tensor. From the perspective of torch, this tensor will always remain on the GPU even if it is offloaded, though it doesn't occupy any GPU memory at this point (like meta device).
 
-
+The hooks system will collect parameter fetching order in the first forward pass, then will use prefetching in following forward passes to accelerate fetching. The `LoHanParamGroup` will use cuda streams to overlap fetching with computing.
 
 Now, this repository use CPU parameter server in LoHan to fetch and offload parameters, you can replace it by modifying  `lohan_hooks/parameter/param_group.py` and `lohan_hooks/cpu_manager.py`.
 
