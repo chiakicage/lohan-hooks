@@ -1,0 +1,10 @@
+__pycache__
+config/
+*.log
+*.qdstrm
+*.nsys-rep
+.venv/
+*.egg-info/
+results/
+logs/
+build/
